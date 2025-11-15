@@ -1,17 +1,47 @@
 <?php
 
+require_once 'src/controllers/SecurityController.php';
+require_once 'src/controllers/DashboardController.php';
 
 class Routing {
 
+    public static $routes = [
+        'login' => [
+            'controller' => "SecurityController",
+            'action' => 'login'
+        ],
+        'register' => [
+            'controller' => "SecurityController",
+            'action' => 'register'
+        ],
+        'dashboard' => [
+            'controller' => "DashboardController",
+            'action' => 'dashboard'
+        ]
+        ];
+
     public static function run(string $path) {
-        //TODO na podstawie sciezki sprawdzamy jaki HTML zwrocic
         switch ($path) {
-    case 'dashboard':
-        include 'public/views/dashboard.html';
-        break;
-    case 'login':
-        include 'public/views/login.html';
-        break;
+            case 'dashboard':
+                $controller_name = Routing::$routes[$path]["controller"];
+                $controller = new $controller_name;
+                
+                $action = Routing::$routes[$path]["action"];
+                $controller->$action();
+                break;
+                
+            case 'login':
+                $controller_name = Routing::$routes[$path]["controller"]; 
+                $controller = new $controller_name; 
+
+                $action = Routing::$routes[$path]["action"];
+                $controller->$action(); 
+                break;
+            case 'register':
+                $controller = new Routing::$routes[$path]['controller'];
+                $action = Routing::$routes[$path]['action'];
+                $controller->$action(); 
+                break;
     default:
         include 'public/views/404.html';
         break;

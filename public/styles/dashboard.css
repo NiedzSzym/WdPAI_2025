@@ -1,0 +1,52 @@
+h1 {
+    background-color: blue;
+}
+
+main {
+    background-color: aqua;
+}
+
+nav {
+    background-color: blueviolet;
+
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+}
+
+nav > ul {
+    display: flex;
+    gap: 2rem;
+}
+
+aside {
+    background-color: beige;
+}
+
+.container {
+    background-color: aquamarine;
+    display: grid;
+    grid-template-columns: 20% 80%;
+    height: calc(100vh - 5rem);
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+@media screen and (max-width: 480px) {
+    .container {
+        grid-template-columns: 1fr;
+    }
+ 
+    aside {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 5rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
