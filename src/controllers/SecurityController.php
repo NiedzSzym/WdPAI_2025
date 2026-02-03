@@ -1,32 +1,65 @@
 <?php
 
 require_once 'AppController.php';
-
+require_once __DIR__.'/../repository/UserRepository.php';
 
 class SecurityController extends AppController {
+    private $userRepository;
 
+    public function __construct() {
+        $this->userRepository = new UserRepository();
+    }
+
+    // TODO dekarator, który definiuje, jakie metody HTTP są dostępne
     public function login() {
-        // TODO get data from database
-        if (!$this->isPost()){
-            return $this->render("login");
-        }
 
-        $email = $_POST['email'] ?? '';
-        $password = $_POST['password']??'';
-        var_dump($_POST);
-        //TODO pobierany z formularza email, hasło sprawdzymy czy taki user istnieje w db jeśli nie istnieje to zwracamy, odpowiednie komunikaty jeśli istnieje to przekeirujemy go na dashboard
-        //  $this->render("login", ["name"=> "Adrian"]);
-        return $this->render("dashboard");
+        if($this->isGet()) {
+            return $this->render("login");
+        } 
+
+        $email = $_POST["email"] ?? '';
+        $password = $_POST["password"] ?? '';
+
+        var_dump($email, $password);
+        // TODO get data from database
+
+         $this->render("dashboard");
     }
 
     public function register() {
-
-         if (!$this->isPost()){
-            return $this->render("register");
-        }
-         return $this->render("login", ["message" => "Zarejestrowano uytkownika ".$email]);
         // TODO pobranie z formularza email i hasła
         // TODO insert do bazy danych
         // TODO zwrocenie informajci o pomyslnym zarejstrowaniu
+
+        if ($this->isGet()) {
+            return $this->render("register");
+        }
+
+        $email = $_POST["email"] ?? '';
+        $password1 = $_POST["password1"] ?? '';
+        $password2 = $_POST["password2"] ?? '';
+        $firstname = $_POST["firstname"] ?? '';
+        $lastname = $_POST["lastname"] ?? '';
+
+        if (empty($email) || empty($password1) || empty($firstname)) {
+            return $this->render('register', ['messages' => 'Fill all fields']);
+        }
+
+        if ($password1 !== $password2) {
+            return $this->render('register', ['messages' => 'asswords should be the same!']);
+        }
+
+        // TODO check if user with this email already exists
+
+        $hashedPassword = password_hash($password1, PASSWORD_BCRYPT);
+
+        $this->userRepository->createUser(
+            $email,
+            $hashedPassword,
+            $firstname,
+            $lastname
+        );
+
+        return $this->render("login", ["message" => "Zarejestrowano uytkownika ".$email]);
     }
 }

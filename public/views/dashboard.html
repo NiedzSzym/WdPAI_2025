@@ -15,15 +15,17 @@
             <li>REPORTS</li>
         </ul>
     </nav>
+    <div class="search-bar">
+        <input placeholder="search card">
+    </div>
     <div class="container">
         <aside>
             <p>PODRECZNE MENU</p>
         </aside>
         <main>
             <h1>CARDS</h1>
-            <!-- TODO display list of cards -->
              <ul>
-                    <?php foreach ($cards as $card): ?>
+                <?php foreach ($cards as $card): ?>
                 <li class="card">
                     <a href="<?= $card['href']; ?>">
                         <img src="<?= $card['imageUrlPath']; ?>" alt="<?= $card['title']; ?>">
@@ -31,7 +33,7 @@
                         <p><?= $card['subtitle']; ?></p>
                     </a>
                 </li>
-            <?php endforeach; ?>
+                <?php endforeach; ?>
              </ul>
         </main>
     </div>
